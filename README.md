@@ -9,7 +9,7 @@ project a long time ago. You shouldn't rely on this for any production use-case.
 
 Use `go-get` to install graphite-golang
 ```
-go get github.com/marpaia/graphite-golang
+go get github.com/bolt-observer/graphite-golang
 ```
 
 ## External dependencies
@@ -19,7 +19,7 @@ This project has no external dependencies other than the Go standard library.
 ## Documentation
 
 Like most every other Golang project, this projects documentation can be found
-on godoc at [godoc.org/github.com/marpaia/graphite-golang](http://godoc.org/github.com/marpaia/graphite-golang).
+on godoc at [godoc.org/github.com/bolt-observer/graphite-golang](http://godoc.org/github.com/bolt-observer/graphite-golang).
 
 ## Examples
 
@@ -27,7 +27,7 @@ on godoc at [godoc.org/github.com/marpaia/graphite-golang](http://godoc.org/gith
 package mylib
 
 import (
-    "github.com/marpaia/graphite-golang"
+    "github.com/bolt-observer/graphite-golang"
     "log"
 )
 
