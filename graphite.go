@@ -11,13 +11,13 @@ import (
 // Graphite is a struct that defines the relevant properties of a graphite
 // connection
 type Graphite struct {
-	Host     string
-	Port     int
-	Protocol string
-	Timeout  time.Duration
-	Prefix   string
-	conn     net.Conn
-	nop      bool
+	Host       string
+	Port       int
+	Protocol   string
+	Timeout    time.Duration
+	Prefix     string
+	conn       net.Conn
+	nop        bool
 	DisableLog bool
 }
 
@@ -27,10 +27,7 @@ const defaultTimeout = 5
 
 // IsNop is a getter for *graphite.Graphite.nop
 func (graphite *Graphite) IsNop() bool {
-	if graphite.nop {
-		return true
-	}
-	return false
+	return graphite.nop
 }
 
 // Given a Graphite struct, Connect populates the Graphite.conn field with an
@@ -103,10 +100,9 @@ func (graphite *Graphite) sendMetrics(metrics []Metric) error {
 		}
 		return nil
 	}
-	zeroed_metric := Metric{} // ignore unintialized metrics
 	buf := bytes.NewBufferString("")
 	for _, metric := range metrics {
-		if metric == zeroed_metric {
+		if metric.IsUninitialized() {
 			continue // ignore unintialized metrics
 		}
 		if metric.Timestamp == 0 {
@@ -119,10 +115,10 @@ func (graphite *Graphite) sendMetrics(metrics []Metric) error {
 			metric_name = metric.Name
 		}
 		if graphite.Protocol == "udp" {
-			fmt.Fprintf(graphite.conn, "%s %s %d\n", metric_name, metric.Value, metric.Timestamp)
+			fmt.Fprintf(graphite.conn, "%s %s %d\n", metric_name, metric.ValueWithTags(), metric.Timestamp)
 			continue
 		}
-		buf.WriteString(fmt.Sprintf("%s %s %d\n", metric_name, metric.Value, metric.Timestamp))
+		buf.WriteString(fmt.Sprintf("%s %s %d\n", metric_name, metric.ValueWithTags(), metric.Timestamp))
 	}
 	if graphite.Protocol == "tcp" {
 		_, err := graphite.conn.Write(buf.Bytes())
