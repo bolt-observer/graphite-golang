@@ -58,10 +58,6 @@ func (metric Metric) convertTags() string {
 	return builder.String()
 }
 
-func (metric Metric) ValueWithTags() string {
-	return fmt.Sprintf("%s%s", metric.Value, metric.convertTags())
-}
-
 func (metric Metric) String() string {
 	return fmt.Sprintf(
 		"%s%s %s %s",

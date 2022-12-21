@@ -115,10 +115,10 @@ func (graphite *Graphite) sendMetrics(metrics []Metric) error {
 			metric_name = metric.Name
 		}
 		if graphite.Protocol == "udp" {
-			fmt.Fprintf(graphite.conn, "%s %s %d\n", metric_name, metric.ValueWithTags(), metric.Timestamp)
+			fmt.Fprintf(graphite.conn, "%s%s %s %d\n", metric_name, metric.convertTags(), metric.Value, metric.Timestamp)
 			continue
 		}
-		buf.WriteString(fmt.Sprintf("%s %s %d\n", metric_name, metric.ValueWithTags(), metric.Timestamp))
+		buf.WriteString(fmt.Sprintf("%s%s %s %d\n", metric_name, metric.convertTags(), metric.Value, metric.Timestamp))
 	}
 	if graphite.Protocol == "tcp" {
 		_, err := graphite.conn.Write(buf.Bytes())
